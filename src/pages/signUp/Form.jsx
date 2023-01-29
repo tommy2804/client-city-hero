@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Avatar, Button, Link, Box, Grid } from '@mui/material';
 import { TextField, Divider, Typography, Checkbox, FormControlLabel } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useGeolocation } from '../../hooks/useGeolocation';
 import Select from 'react-select';
 import { login, register } from '../../api';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../state/slices/UserSlice';
 
 function Copyright(props) {
   return (
@@ -38,7 +41,10 @@ export default function Form() {
   const [isLogin, setIsLogin] = useState(false);
   const [formData, setFormData] = useState(initialData);
   const position = useGeolocation();
-  //   console.log(position);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  console.log(position);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -60,6 +66,8 @@ export default function Form() {
           })
         );
         console.log(res.data);
+        dispatch(setUser(res.data));
+        navigate('/HomePage');
       } else {
         alert(res.data);
       }
@@ -79,9 +87,8 @@ export default function Form() {
             fullName: res.data.fullName,
           })
         );
-        console.log('home');
-
-        // Navigate('/home');
+        dispatch(setUser(res.data));
+        navigate('/HomePage');
       } else {
         alert(res.data);
       }
@@ -155,14 +162,12 @@ export default function Form() {
                 More Details:
               </Typography>
               <Grid container spacing={2}>
-                <Grid item xs>
-                  <div className="App">
-                    <Select
-                      defaultValue={formData.gender}
-                      onChange={(ev) => setFormData({ ...formData, gender: ev.value })}
-                      options={gender}
-                    />
-                  </div>
+                <Grid item xs justifyContent="center" mt="2rem">
+                  <Select
+                    defaultValue={formData.gender}
+                    onChange={(ev) => setFormData({ ...formData, gender: ev.value })}
+                    options={gender}
+                  />
                 </Grid>
                 <Grid item xs>
                   <TextField
