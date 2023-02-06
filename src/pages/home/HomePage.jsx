@@ -2,18 +2,28 @@ import React, { useEffect, useState } from 'react';
 import { Box, useMediaQuery } from '@mui/material';
 import MapsWidget from './MapsWidget';
 import axios from 'axios';
-import { blue, green, grey } from '@mui/material/colors';
+
 import ShowRequset from './showRequset';
 import RequsetBar from './requsetBar';
 import Navbar from '../../components/navbar';
 import ReportsWidget from '../ReportsWidget';
-import { selectReports } from '../../state/slices/ReportSlice';
-import { useSelector } from 'react-redux';
+import {
+  selectReports,
+  selectReport,
+  filteredReport,
+  updateReports,
+} from '../../state/slices/ReportSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import Sidebar from '../../components/sidebar/index';
+import ReportWidget from '../ReportsWidget/Report';
+import { CustomSelect } from '../../components/custom/Select/dropdown';
 
 const HomePage = () => {
   const isNonMobileScreens = useMediaQuery('(min-width:1000px)');
   const reports = useSelector(selectReports);
-  console.log(reports);
+  const report = useSelector(selectReport);
+  const filteredReports = useSelector(filteredReport);
+  console.log(report);
   const [requests, setRequests] = useState([]);
   const [inspectors, setInspectors] = useState([]);
   const [showRequest, setShowRequest] = useState(null);
@@ -22,6 +32,7 @@ const HomePage = () => {
   const [showRequestUrgency, setShowRequestUrgency] = useState(null);
   const [showRequestInspector, setShowRequestInspector] = useState(null);
   const [center, setCenter] = useState({ lat: 32.0872401, lng: 34.8041696 });
+  const dispatch = useDispatch();
   useEffect(() => {
     getRequests();
     getInspectors();
@@ -38,7 +49,7 @@ const HomePage = () => {
         urgency: showRequestUrgency,
         inCharge: showRequestInspector.id,
       });
-      getRequests();
+      // getRequests();
       setShowRequest(null);
     } else {
       document.getElementById('alrt' + showRequest._id).innerHTML =
@@ -57,6 +68,7 @@ const HomePage = () => {
       );
       setRequests(data);
       setShowRequestOnMap(data);
+      dispatch(updateReports(data));
     }
     if (kind == 'Municipality-Status') {
       const { data } = await axios.get(
@@ -64,6 +76,7 @@ const HomePage = () => {
       );
       setRequests(data);
       setShowRequestOnMap(data);
+      dispatch(updateReports(data));
     }
     if (kind == 'Municipality-Citizen') {
       const { data } = await axios.get(`http://localhost:4001/request/getCitizenRequests/${value}`);
@@ -73,6 +86,8 @@ const HomePage = () => {
       if (value == 'all') {
         getRequests();
         setShowInspectorOnMap(inspectors);
+        dispatch(updateReports(reports));
+
         return;
       }
       const { data } = await axios.get(
@@ -82,13 +97,17 @@ const HomePage = () => {
       setShowInspectorOnMap(inspectors.filter((inspector) => inspector._id == value));
     }
   }
+  const statuses = [
+    { value: 'municipality', label: 'Sent to the municipality', isFixed: true },
+    { value: 'inspector', label: 'Sent to the inspector' },
+    {
+      value: 'Hendeled',
+      label: 'Hendeled by the inspector and returned ',
+    },
+  ];
 
   const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  const statuses = [
-    'Sent to the municipality',
-    'Sent to the inspector',
-    'Hendeled by the inspector and returned to Municipality',
-  ];
+
   return (
     <>
       <Navbar />
@@ -100,6 +119,8 @@ const HomePage = () => {
         justifyContent="space-between">
         {isNonMobileScreens && (
           <Box flexBasis="15%" height="">
+            <Sidebar />
+
             <ShowRequset
               inspectors={inspectors}
               showRequest={showRequest}
@@ -115,6 +136,10 @@ const HomePage = () => {
           padding={isNonMobileScreens ? '0 1rem' : 0}
           flexBasis={isNonMobileScreens ? '35%' : undefined}
           mt={isNonMobileScreens ? undefined : '2rem'}>
+          <Box width="300px">
+            <CustomSelect onChange={sortRequests} option={statuses} />
+          </Box>
+
           <select
             name="reqByInspector"
             id="reqByUrgencyInspector"
@@ -165,11 +190,11 @@ const HomePage = () => {
             name="reqByStatusMunicipality"
             id="reqByStatusMunicipality"
             onChange={(e) => sortRequests(e.target.value, 'Municipality-Status')}>
-            {statuses.map((status) => (
+            {/* {statuses.map((status) => (
               <option key={status} value={status}>
                 {status}
               </option>
-            ))}
+            ))} */}
           </select>
 
           <MapsWidget

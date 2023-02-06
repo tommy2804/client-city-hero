@@ -12,7 +12,6 @@ import {
 } from '@mui/material';
 import { Search, Notifications, Help, Menu, Close, Light } from '@mui/icons-material';
 import FlexBetween from '../flexBetween';
-import Sidebar from '../sidebar';
 
 const Navbar = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
@@ -57,8 +56,6 @@ const Navbar = () => {
       {/* DESKTOP NAV */}
 
       <FlexBetween gap="2rem">
-        <Sidebar />
-
         <IconButton>
           <Help sx={{ fontSize: '25px' }} />
         </IconButton>

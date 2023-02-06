@@ -3,7 +3,7 @@ import ReportWidget from './Report';
 import { useQuery } from 'react-query';
 import { getRequests } from '../../api';
 import { useDispatch } from 'react-redux';
-import { addReports } from '../../state/slices/ReportSlice';
+import { addReports, setReport, updateReports } from '../../state/slices/ReportSlice';
 
 const ReportsWidget = ({ reports }) => {
   const dispatch = useDispatch();
@@ -13,6 +13,7 @@ const ReportsWidget = ({ reports }) => {
   else if (data) {
     // console.log(data.data);
     dispatch(addReports(data.data));
+    dispatch(updateReports(data.data));
   }
 
   return (
