@@ -7,19 +7,10 @@ import {
   Marker,
   Autocomplete,
   DirectionsRenderer,
+  InfoWindow,
 } from '@react-google-maps/api';
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  Flex,
-  HStack,
-  IconButton,
-  Input,
-  SkeletonText,
-  Text,
-} from '@chakra-ui/react';
-import React, { useRef, useState } from 'react';
+import { Box, Button, ButtonGroup, Flex } from '@chakra-ui/react';
+import React, { useRef, useState, useEffect } from 'react';
 // import inspector from '/assets/policeman.png';
 const locations = [
   { name: 'Rabin Square', position: { lat: 32.0808, lng: 34.78 } },
@@ -31,7 +22,10 @@ const locations = [
 ];
 
 export default function MapsWidget() {
-  const markerRef = useRef(null);
+  const markerRef = useRef();
+  const mapRef = useRef();
+  const [map, setMap] = useState(/** @type google.maps.Map */ (null));
+
   const center = { lat: 32.0872401, lng: 34.8041696 };
   const position = { lat: 32.0872401, lng: 34.8041696 };
   const containerStyle = {
@@ -47,65 +41,53 @@ export default function MapsWidget() {
     googleMapsApiKey: env.GOOGLE_MAPS_APIKEY,
     libraries: ['places'],
   });
-
-  const [map, setMap] = useState(/** @type google.maps.Map */ (null));
-
   const onLoad = React.useCallback(function callback(map) {
     // This is just an example of getting and using the map instance!!! don't just blindly copy!
-    const bounds = new window.google.maps.LatLngBounds(center);
-    map.fitBounds(bounds);
 
     setMap(map);
   }, []);
-
   const onUnmount = React.useCallback(function callback(map) {
     setMap(null);
   }, []);
 
   // animate
-  function toggleBounce() {
-    console.log(markerRef);
-    if (markerRef.current.marker.getAnimation() !== null) {
-      markerRef.current.marker.setAnimation(null);
-    } else {
-      markerRef.current.marker.setAnimation(google.maps.Animation.BOUNCE);
-    }
-  }
 
   return (
     <Flex position="relative" flexDirection="column" alignItems="center">
       <Box h="90vh" w="100%">
         {isLoaded ? (
           <GoogleMap
+            ref={mapRef}
             mapContainerStyle={containerStyle}
             center={center}
             zoom={12}
             onLoad={onLoad}
             onUnmount={onUnmount}>
-            {locations.map((inspector) => (
+            {locations.map((inspector, i) => (
               <Marker
                 key={inspector.name}
+                ref={markerRef}
                 position={inspector.position}
                 clickable
                 icon={{
                   url: '/assets/policeman.png',
                   scaledSize: new window.google.maps.Size(30, 30),
                 }}
+                title={inspector.name}
               />
             ))}
             <Marker
-              ref={markerRef}
               clickable
               position={position}
               icon={{
                 url: '/assets/policeman.png',
                 scaledSize: new window.google.maps.Size(30, 30),
               }}
+
               // eslint-disable-next-line no-undef
-              // animation={google.maps.Animation.BOUNCE}
-              onClick={toggleBounce}
             />
             {/* Child components, such as markers, info windows, etc. */}
+
             <></>
           </GoogleMap>
         ) : (

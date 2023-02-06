@@ -38,7 +38,7 @@ const gender = [
 ];
 
 export default function Form() {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState(initialData);
   const position = useGeolocation();
   const navigate = useNavigate();
