@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import ReportWidget from './Report';
 import { useQuery } from 'react-query';
 import { getRequests } from '../../api';

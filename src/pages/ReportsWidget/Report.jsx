@@ -1,12 +1,11 @@
 import { ChatBubbleOutlineOutlined, ShareOutlined, Send } from '@mui/icons-material';
 import { IconButton, Typography, useTheme, Box, Paper } from '@mui/material';
 import WidgetWrapper from '../../components/WidgetWraper';
-import { useState } from 'react';
 import moment from 'moment';
 import FlexBetween from '../../components/flexBetween';
 import CustomImage from '../../components/custom/customImage';
 
-const ReportWidget = ({ report, description }) => {
+const ReportWidget = ({ report }) => {
   const { palette } = useTheme();
   const main = palette.neutral.main;
 

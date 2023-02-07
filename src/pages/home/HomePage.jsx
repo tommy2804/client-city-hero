@@ -22,8 +22,6 @@ const HomePage = () => {
   const isNonMobileScreens = useMediaQuery('(min-width:1000px)');
   const reports = useSelector(selectReports);
   const report = useSelector(selectReport);
-  const filteredReports = useSelector(filteredReport);
-  console.log(report);
   const [requests, setRequests] = useState([]);
   const [inspectors, setInspectors] = useState([]);
   const [showRequest, setShowRequest] = useState(null);
