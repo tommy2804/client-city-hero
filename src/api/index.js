@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { async } from 'q';
 
 const API = axios.create({ baseURL: 'http://localhost:4001' });
 
@@ -10,25 +11,22 @@ API.interceptors.request.use((req) => {
   return req;
 });
 
-export const register = (formData) => API.post('/auth/register', formData);
-export const login = (formData) => API.post('/auth/login', formData);
+export const register = async (formData) => await axios.post('http://localhost:4001/auth/register', formData);
+export const login = async (formData) => await axios.post('http://localhost:4001/auth/login', formData);
 
 export const getRequests = async () => await API.get(`/request/getMunicipalityRequests`);
 
-export const sendToInspector = async (reqId, data) =>
-  await API.put(`/request/municipalityUpdate/${reqId}`, data);
+export const sendToInspector = async (reqId, data) => await API.put(`/request/municipalityUpdate/${reqId}`, data);
 
 export const getInspectors = async () => await API.get(`/users/getInspectors`);
 
 export const sortRequests = async (value, kind) => {
-  if (kind === 'Municipality-Urgency') {
-    return await API.get(`/request/getRequestsByUrgencyMunicipality/${value}`);
+  if (kind === 'Municipality-urgency') {
+    const {data} = await API.get(`/request/getRequestsByUrgencyMunicipality/${value}`);
+    return data
   }
-  if (kind === 'Municipality-Status') {
+  if (kind === 'Municipality-status') {
     return await API.get(`request/getRequestsByStatusMunicipality/${value}`);
-  }
-  if (kind === 'Municipality-Citizen') {
-    return await API.get(`request/getCitizenRequests/${value}`);
   }
   if (kind === 'Municipality-Inspector') {
     if (value === 'all') {

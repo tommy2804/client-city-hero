@@ -7,21 +7,20 @@ import ShowRequset from './showRequset';
 import RequsetBar from './requsetBar';
 import Navbar from '../../components/navbar';
 import ReportsWidget from '../ReportsWidget';
-import {
-  selectReports,
-  selectReport,
-  filteredReport,
-  updateReports,
-} from '../../state/slices/ReportSlice';
+import {selectReports,selectReport,filteredReport,updateReports,} from '../../state/slices/ReportSlice';
+// import {selectInspectors,selectInspector,setInspector,addInspectors,} from '../../state/slices/InspectorsSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import Sidebar from '../../components/sidebar/index';
 import ReportWidget from '../ReportsWidget/Report';
 import { CustomSelect } from '../../components/custom/Select/dropdown';
+import { sortRequests } from '../../api'; 
 
 const HomePage = () => {
   const isNonMobileScreens = useMediaQuery('(min-width:1000px)');
-  const reports = useSelector(selectReports);
-  const report = useSelector(selectReport);
+  // const reports = useSelector(selectReports);
+  // const report = useSelector(selectReport);
+  // const inspectors = useSelector(selectInspectors);
+  // const inspector = useSelector(selectInspector);
   const [requests, setRequests] = useState([]);
   const [inspectors, setInspectors] = useState([]);
   const [showRequest, setShowRequest] = useState(null);
@@ -30,7 +29,7 @@ const HomePage = () => {
   const [showRequestUrgency, setShowRequestUrgency] = useState(null);
   const [showRequestInspector, setShowRequestInspector] = useState(null);
   const [center, setCenter] = useState({ lat: 32.0872401, lng: 34.8041696 });
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   useEffect(() => {
     getRequests();
     getInspectors();
@@ -59,52 +58,43 @@ const HomePage = () => {
     setInspectors(data);
     setShowInspectorOnMap(data);
   }
-  async function sortRequests(value, kind) {
-    if (kind == 'Municipality-Urgency') {
-      const { data } = await axios.get(
-        `http://localhost:4001/request/getRequestsByUrgencyMunicipality/${value}`
-      );
-      setRequests(data);
-      setShowRequestOnMap(data);
-      dispatch(updateReports(data));
-    }
-    if (kind == 'Municipality-Status') {
-      const { data } = await axios.get(
-        `http://localhost:4001/request/getRequestsByStatusMunicipality/${value}`
-      );
-      setRequests(data);
-      setShowRequestOnMap(data);
-      dispatch(updateReports(data));
-    }
-    if (kind == 'Municipality-Citizen') {
-      const { data } = await axios.get(`http://localhost:4001/request/getCitizenRequests/${value}`);
-      setRequests(data);
-    }
-    if (kind == 'Municipality-Inspector') {
-      if (value == 'all') {
-        getRequests();
-        setShowInspectorOnMap(inspectors);
-        dispatch(updateReports(reports));
+  // async function sortRequests(value, kind) {
+  //   if (kind == 'Municipality-Urgency') {
+  //     const { data } = await axios.get(
+  //       `http://localhost:4001/request/getRequestsByUrgencyMunicipality/${value}`
+  //     );
+  //     setRequests(data);
+  //     setShowRequestOnMap(data);
+  //     dispatch(updateReports(data));
+  //   }
+  //   if (kind == 'Municipality-Status') {
+  //     const { data } = await axios.get(
+  //       `http://localhost:4001/request/getRequestsByStatusMunicipality/${value}`
+  //     );
+  //     setRequests(data);
+  //     setShowRequestOnMap(data);
+  //     dispatch(updateReports(data));
+  //   }
+  //   if (kind == 'Municipality-Citizen') {
+  //     const { data } = await axios.get(`http://localhost:4001/request/getCitizenRequests/${value}`);
+  //     setRequests(data);
+  //   }
+  //   if (kind == 'Municipality-Inspector') {
+  //     if (value == 'all') {
+  //       getRequests();
+  //       setShowInspectorOnMap(inspectors);
+  //       dispatch(updateReports(reports));
 
-        return;
-      }
-      const { data } = await axios.get(
-        `http://localhost:4001/request/getInspectorRequests/${value}`
-      );
-      setShowRequestOnMap(data);
-      setShowInspectorOnMap(inspectors.filter((inspector) => inspector._id == value));
-    }
-  }
-  const statuses = [
-    { value: 'municipality', label: 'Sent to the municipality', isFixed: true },
-    { value: 'inspector', label: 'Sent to the inspector' },
-    {
-      value: 'Hendeled',
-      label: 'Hendeled by the inspector and returned ',
-    },
-  ];
+  //       return;
+  //     }
+  //     const { data } = await axios.get(
+  //       `http://localhost:4001/request/getInspectorRequests/${value}`
+  //     );
+  //     setShowRequestOnMap(data);
+  //     setShowInspectorOnMap(inspectors.filter((inspector) => inspector._id == value));
+  //   }
+  // }
 
-  const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   return (
     <>
@@ -118,7 +108,6 @@ const HomePage = () => {
         {isNonMobileScreens && (
           <Box flexBasis="15%" height="">
             <Sidebar />
-
             <ShowRequset
               inspectors={inspectors}
               showRequest={showRequest}
@@ -134,11 +123,11 @@ const HomePage = () => {
           padding={isNonMobileScreens ? '0 1rem' : 0}
           flexBasis={isNonMobileScreens ? '35%' : undefined}
           mt={isNonMobileScreens ? undefined : '2rem'}>
-          <Box width="300px">
-            <CustomSelect onChange={sortRequests} option={statuses} />
-          </Box>
 
-          <select
+          {/* <Box width="300px">
+            <CustomSelect onChange={sortRequests} option={"statuses"} />
+          </Box>
+           <select
             name="reqByInspector"
             id="reqByUrgencyInspector"
             onChange={(e) => sortRequests(e.target.value, 'Municipality-Inspector')}>
@@ -148,19 +137,10 @@ const HomePage = () => {
                 {inspector.firstName}
               </option>
             ))}
-          </select>
-          <ReportsWidget reports={reports} />
-          {/* {reports.map((request) => (
-            <RequsetBar
-              key={request._id}
-              request={request}
-              setShowRequest={setShowRequest}
-              setShowRequestOnMap={setShowRequestOnMap}
-              setCenter={setCenter}
-              setShowRequestInspector={setShowRequestInspector}
-              setShowRequestUrgency={setShowRequestUrgency}
-            />
-          ))} */}
+          </select>  */}
+
+          <ReportsWidget requests={requests} />
+
         </Box>
 
         <Box
@@ -174,33 +154,18 @@ const HomePage = () => {
             }}>
             get all
           </button>
-          <select
-            name="reqByUrgencyMunicipality"
-            id="reqByUrgencyMunicipality"
-            onChange={(e) => sortRequests(e.target.value, 'Municipality-Urgency')}>
-            {nums.map((num) => (
-              <option key={num} value={num}>
-                {num}+
-              </option>
-            ))}
-          </select>
-          <select
-            name="reqByStatusMunicipality"
-            id="reqByStatusMunicipality"
-            onChange={(e) => sortRequests(e.target.value, 'Municipality-Status')}>
-            {/* {statuses.map((status) => (
-              <option key={status} value={status}>
-                {status}
-              </option>
-            ))} */}
-          </select>
-
+          <Box width="300px">
+            <CustomSelect onChange={sortRequests} option={'status'} />
+          </Box>
+          <Box width="300px">
+            <CustomSelect onChange={sortRequests} option={'urgency'} />
+          </Box>
           <MapsWidget
             center={center}
-            requests={showRequestOnMap}
-            inspectors={showInspectorOnMap}
-            setShowRequestInspector={setShowRequestInspector}
-          />
+             requests={showRequestOnMap}
+             inspectors={showInspectorOnMap}
+             setShowRequestInspector={setShowRequestInspector}
+           />
         </Box>
       </Box>
     </>

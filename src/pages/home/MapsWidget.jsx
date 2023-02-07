@@ -10,8 +10,12 @@ import {
 } from '@react-google-maps/api';
 import { Box, Flex } from '@chakra-ui/react';
 import React, { useEffect, useRef, useState } from 'react';
+import { getInspectors } from '../../api';
+import { addInspectors, selectInspectors} from '../../state/slices/InspectorsSlice';
 
-export default function MapsWidget({ requests, inspectors, setShowRequestInspector, center }) {
+
+
+export default function MapsWidget({ requests,inspectors, setShowRequestInspector, center }) {
   const markerRef = useRef(null);
 
   const containerStyle = {
