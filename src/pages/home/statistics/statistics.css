@@ -1,0 +1,40 @@
+.statisticsPage{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background-color: #5c677d;
+}
+.statisticsPage *{
+    color: aliceblue;
+}
+.statisticsGraph{
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(400px,20%)) ;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+.graph{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.graphANDlabels{
+    display: flex;
+    gap: 20px;
+}
+
+.graphANDlabels .labels{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+.pai{
+    width: 60%;
+}

@@ -14,13 +14,10 @@ const AddReq = () => {
       }
 
     const setImgUrl = (e) => {
-    console.log('hi')
     const file = e.target.files[0]; // defines file as an object who contain image data
     const reader = new FileReader(); // defines new instance from FileReader class
     reader.readAsDataURL(file); // converts the file to base64
-    console.log(reader)
     reader.onloadend = () => {
-        console.log(reader.result);
         setImg(reader.result);
       };
     }

@@ -9,14 +9,17 @@ import {
   DirectionsRenderer,
 } from '@react-google-maps/api';
 import { Box, Flex } from '@chakra-ui/react';
-import React, { useEffect, useRef, useState } from 'react';
-import { getInspectors } from '../../api';
-import { addInspectors, selectInspectors} from '../../state/slices/InspectorsSlice';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { MyContext } from '../../context/context';
+// import {GOOGLE_MAPS_APIKEY} from '../../..'
 
 
 
-export default function MapsWidget({ requests,inspectors, setShowRequestInspector, center }) {
+export default function MapsWidget( {requests, center, inspectors}) {
   const markerRef = useRef(null);
+  const {setShowRequestInspector,setShowRequest,setOpen} = useContext (MyContext);
+
+
 
   const containerStyle = {
     position: 'absolute',
@@ -31,7 +34,7 @@ export default function MapsWidget({ requests,inspectors, setShowRequestInspecto
   };
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: env.GOOGLE_MAPS_APIKEY,
+    googleMapsApiKey: 'AIzaSyAdn5fJbrsQ-ebgxC4crwIhbfGqYoMuxQE',
     libraries: ['places'],
   });
 
@@ -59,8 +62,8 @@ export default function MapsWidget({ requests,inspectors, setShowRequestInspecto
   }
 
   return (
-    <Flex position="relative" flexDirection="column" alignItems="center">
-      <Box h="90vh" w="100%">
+    <Flex h='90%'  position="relative" flexDirection="column" alignItems="center" m='3%'>
+      <Box h="80vh" w="100%" >
         {isLoaded ? (
           <GoogleMap
             mapContainerStyle={containerStyle}
@@ -87,6 +90,7 @@ export default function MapsWidget({ requests,inspectors, setShowRequestInspecto
                 key={request.lat}
                 position={request.location}
                 clickable
+                onClick={()=>{setShowRequest({...request});setOpen(true)}}
                 icon={{
                   url:
                     request.status == 'Sent to the municipality'

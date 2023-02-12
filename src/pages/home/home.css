@@ -1,0 +1,45 @@
+/* .homePage *{
+    border:2px solid red ;
+} */
+.homePage{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* gap:20px; */
+    width: 96%;
+    margin-left: 4%;
+}
+.logo{
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(400px,45%)) ;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    width: 80%;
+    overflow: hidden;
+
+
+}
+.logoText{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    transform: translateX(100%);
+    animation: SuperheroEntrance 2s forwards;
+}
+
+.logoPic {
+    width: 400px;
+    transform: translateY(100%);
+    animation: logoTextEntrance 2s forwards;
+  }
+  
+  @keyframes SuperheroEntrance {
+    100% {transform: translateY(0);}
+  }
+  @keyframes logoTextEntrance {
+    100% {transform: translateX(0);}
+  }

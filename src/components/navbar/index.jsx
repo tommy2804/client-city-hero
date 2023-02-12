@@ -33,7 +33,7 @@ const Navbar = () => {
               cursor: 'pointer',
             },
           }}>
-          TEL AVIV
+            <img  style={{width:'150px'}} src="/assets/titel-logo-removebg-preview.png" alt="" />
         </Typography>
         {isNonMobileScreens && (
           <FlexBetween
@@ -47,14 +47,27 @@ const Navbar = () => {
             </IconButton>
           </FlexBetween>
         )}
+        
       </FlexBetween>
 
+          
       {/* DESKTOP NAV */}
 
       <FlexBetween gap="2rem">
-        <IconButton>
-          <Help sx={{ fontSize: '25px' }} />
-        </IconButton>
+      <Typography
+          fontWeight="bold"
+          fontSize="clamp(1rem, 2rem, 2.25rem)"
+          color={neutralLight}
+          // onClick={() => navigate('/home')}
+          sx={{
+            '&:hover': {
+              color: neutralLight,
+              cursor: 'pointer',
+            },
+          }}>
+              TEL AVIV
+        </Typography>
+        
         <FormControl variant="standard" value={'tommy'}>
           <Select
             value={'fullName'}

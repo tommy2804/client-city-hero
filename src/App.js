@@ -2,13 +2,20 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { store } from './state/store';
 import { Provider } from 'react-redux';
-import HomePage from './pages/home/HomePage';
+import ReportHandler from './pages/ReportHandler/ReportHandler';
 import SignUp from './pages/signUp';
 import AddReq from './pages/addReq/addReq';
 import { ThemeProvider } from '@mui/material';
 import { theme } from './theme';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import ContextProvider from './context/context';
+import Navbar from './components/navbar';
+import Main from './pages/main';
+import AddInspector from './pages/addInspector/AddInspector';
+import AllInspectors from './pages/allInspectors/AllInspectors';
+import Home from './pages/home/home';
+
 
 const App = () => {
   const queryClient = new QueryClient();
@@ -17,13 +24,20 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme}>
           <Provider store={store}>
-            <div>
-              <Routes>
-                <Route path="/" element={<SignUp />} />
-                <Route path="/HomePage" element={<HomePage />} />
-                <Route path="/AddReq" element={<AddReq />} />
-              </Routes>
-            </div>
+            <ContextProvider>
+              <div>
+                <Routes>
+                  <Route path="/" element={<SignUp />} />
+                  <Route path="/Main" element={<Main />} >
+                    <Route path="/Main" element={<Home/>} />
+                    <Route path="/Main/ReportHandler" element={<ReportHandler/>} />
+                    <Route path="/Main/addreq" element={<AddReq/>} />
+                    <Route path="/Main/AddInspector" element={<AddInspector/>} />
+                    <Route path="/Main/AllInspectors" element={<AllInspectors/>} />
+                  </Route>
+                </Routes>
+              </div>
+            </ContextProvider>
           </Provider>
         </ThemeProvider>
       </QueryClientProvider>

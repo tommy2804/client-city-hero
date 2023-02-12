@@ -1,6 +1,8 @@
 import { Avatar, Typography, Box } from '@mui/material';
 
-const UserInfo = ({ fullName = 'Tommy Rozenberg', size = '60px', image }) => {
+const UserInfo = ({ size = '60px', image }) => {
+  const local=localStorage.getItem("User")
+
   return (
     <Box display="flex" alignItems="center" flexDirection="column">
       <Box width={size} height={size}>
@@ -16,7 +18,7 @@ const UserInfo = ({ fullName = 'Tommy Rozenberg', size = '60px', image }) => {
           <Avatar />
         )}
       </Box>
-      <Typography variant="h6">{fullName || 'Current User'}</Typography>
+      <Typography variant="h6">{'55' || 'Current User'}</Typography>
 
       <Typography variant="body2"></Typography>
     </Box>

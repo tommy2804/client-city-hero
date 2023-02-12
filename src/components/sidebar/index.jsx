@@ -16,6 +16,14 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import UserInfo from '../custom/UserInfo';
+import ArticleIcon from '@mui/icons-material/Article';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import HomeIcon from '@mui/icons-material/Home';
+import LocalPoliceIcon from '@mui/icons-material/LocalPolice';
+import { useNavigate } from 'react-router-dom'
+
+
+
 
 const drawerWidth = 290;
 
@@ -67,8 +75,14 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function MiniDrawer() {
-  const [open, setOpen] = React.useState(true);
-
+  const [open, setOpen] = React.useState(false);
+  const links=[
+    {name:'Home' ,icon:<HomeIcon/> , path:'/Main'},
+    {name:'Report handler' ,icon:<ArticleIcon/> , path:'/Main/ReportHandler'},
+    {name:'Add inspector' ,icon:<GroupAddIcon/> , path:'/Main/AddInspector'},
+    {name:'Inspectors handler' ,icon:<LocalPoliceIcon/> , path:'/Main/AllInspectors'},
+  ]
+  const navigate=useNavigate();
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -96,12 +110,12 @@ export default function MiniDrawer() {
         </DrawerHeader>
 
         <Divider />
-
-        <DrawerHeader>{open && <UserInfo />}</DrawerHeader>
+        
+        <DrawerHeader>{open && <img src='./assets/Tel_Aviv_Logo.png'></img>}</DrawerHeader>
 
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+          {links.map((link) => (
+            <ListItem key={link.name} disablePadding sx={{ display: 'block' }} onClick={()=>navigate(link.path)}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -114,15 +128,15 @@ export default function MiniDrawer() {
                     mr: open ? 3 : 'auto',
                     justifyContent: 'center',
                   }}>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  {link.icon}
                 </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary={link.name} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
         <Divider />
-        <List>
+        {/* <List>
           {['All mail', 'Trash', 'Spam'].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
@@ -143,7 +157,7 @@ export default function MiniDrawer() {
               </ListItemButton>
             </ListItem>
           ))}
-        </List>
+        </List> */}
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />

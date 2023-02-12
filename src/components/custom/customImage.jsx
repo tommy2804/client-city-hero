@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material';
 const CustomImage = ({ image, width, size = '' }) => {
   return (
-    <Box width={width} height={image ? '30vh' : '4vh'} position="relative">
+    <Box width='100%' height={image ? '30vh' : '4vh'} position="relative" display='flex' justifyContent="center">
       {image ? (
         <img
           src={image}
