@@ -12,12 +12,19 @@ import {
 } from '@mui/material';
 import { Search, Notifications, Help, Menu, Close, Light } from '@mui/icons-material';
 import FlexBetween from '../flexBetween';
+import jwt_decode from "jwt-decode";
+import { useNavigate } from 'react-router-dom';
+
+
 
 const Navbar = () => {
+  const navigate=useNavigate();
   const isNonMobileScreens = useMediaQuery('(min-width: 1000px)');
   const theme = useTheme();
   const neutralLight = theme.palette.neutral.light;
   const dark = theme.palette.neutral.dark;
+  const token=localStorage.getItem('User')
+  let decoded = jwt_decode(token);
 
   return (
     <FlexBetween padding="1rem 6%" backgroundColor={dark}>
@@ -33,7 +40,18 @@ const Navbar = () => {
               cursor: 'pointer',
             },
           }}>
-            <img  style={{width:'150px'}} src="/assets/titel-logo-removebg-preview.png" alt="" />
+                  <Typography
+          fontWeight="bold"
+          fontSize="clamp(1rem, 2rem, 2.25rem)"
+          color={neutralLight}
+          sx={{
+            '&:hover': {
+              color: neutralLight,
+              cursor: 'pointer',
+            },
+          }}>
+            {decoded.city}
+        </Typography>
         </Typography>
         {isNonMobileScreens && (
           <FlexBetween
@@ -54,43 +72,26 @@ const Navbar = () => {
       {/* DESKTOP NAV */}
 
       <FlexBetween gap="2rem">
+        
       <Typography
           fontWeight="bold"
           fontSize="clamp(1rem, 2rem, 2.25rem)"
           color={neutralLight}
-          // onClick={() => navigate('/home')}
+          display='flex'
+          flexDirection='column'
+          justifyContent='center'
+          alignItems='center'
           sx={{
             '&:hover': {
-              color: neutralLight,
+              color: 'red',
               cursor: 'pointer',
             },
           }}>
-              TEL AVIV
+          <i class="fa-solid fa-door-open" onClick={()=>{localStorage.removeItem('User');navigate('/')}}></i>
+          <div style={{fontSize:'0.9rem'}}>log out</div>
         </Typography>
         
-        <FormControl variant="standard" value={'tommy'}>
-          <Select
-            value={'fullName'}
-            sx={{
-              backgroundColor: neutralLight,
-              width: '150px',
-              borderRadius: '0.25rem',
-              p: '0.25rem 1rem',
-              '& .MuiSvgIcon-root': {
-                pr: '0.25rem',
-                width: '3rem',
-              },
-              '& .MuiSelect-select:focus': {
-                backgroundColor: neutralLight,
-              },
-            }}
-            input={<InputBase />}>
-            <MenuItem value={'fullName'}>
-              <Typography>{'fullName'}</Typography>
-            </MenuItem>
-            <MenuItem onClick={() => {}}>Log Out</MenuItem>
-          </Select>
-        </FormControl>
+
       </FlexBetween>
     </FlexBetween>
   );

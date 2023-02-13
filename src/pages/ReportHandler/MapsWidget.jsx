@@ -1,25 +1,13 @@
 /* eslint-disable no-undef */
-import env from 'react-dotenv';
-import GoogleMapReact from 'google-map-react';
-import {
-  useJsApiLoader,
-  GoogleMap,
-  Marker,
-  Autocomplete,
-  DirectionsRenderer,
-} from '@react-google-maps/api';
+import { useJsApiLoader, GoogleMap, Marker } from '@react-google-maps/api';
 import { Box, Flex } from '@chakra-ui/react';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { MyContext } from '../../context/context';
 // import {GOOGLE_MAPS_APIKEY} from '../../..'
 
-
-
-export default function MapsWidget( {requests, center, inspectors}) {
+export default function MapsWidget({ requests, center, inspectors }) {
   const markerRef = useRef(null);
-  const {setShowRequestInspector,setShowRequest,setOpen} = useContext (MyContext);
-
-
+  const { setShowRequestInspector, setShowRequest, setOpen } = useContext(MyContext);
 
   const containerStyle = {
     position: 'absolute',
@@ -29,7 +17,7 @@ export default function MapsWidget( {requests, center, inspectors}) {
     width: '100%',
     borderRadius: '10px',
     featureType: 'transit',
-    elementType: 'labels.icon',
+    elementType: 'labels',
     stylers: [{ visibility: 'off' }],
   };
 
@@ -52,18 +40,9 @@ export default function MapsWidget( {requests, center, inspectors}) {
     setMap(null);
   }, []);
 
-  // animate
-  function toggleBounce() {
-    if (markerRef.current.marker.getAnimation() !== null) {
-      markerRef.current.marker.setAnimation(null);
-    } else {
-      markerRef.current.marker.setAnimation(google.maps.Animation.BOUNCE);
-    }
-  }
-
   return (
-    <Flex h='90%'  position="relative" flexDirection="column" alignItems="center" m='3%'>
-      <Box h="80vh" w="100%" >
+    <Flex h="90%" position="relative" flexDirection="column" alignItems="center" m="3%">
+      <Box h="80vh" w="100%">
         {isLoaded ? (
           <GoogleMap
             mapContainerStyle={containerStyle}
@@ -90,7 +69,10 @@ export default function MapsWidget( {requests, center, inspectors}) {
                 key={request.lat}
                 position={request.location}
                 clickable
-                onClick={()=>{setShowRequest({...request});setOpen(true)}}
+                onClick={() => {
+                  setShowRequest({ ...request });
+                  setOpen(true);
+                }}
                 icon={{
                   url:
                     request.status == 'Sent to the municipality'
@@ -98,12 +80,10 @@ export default function MapsWidget( {requests, center, inspectors}) {
                       : request.status == 'Sent to the inspector'
                       ? '/assets/icon-blue.jpg'
                       : '/assets/icon-green.jpg',
-                  scaledSize: new window.google.maps.Size(40, 40),
+                  scaledSize: new window.google.maps.Size(25, 25),
                 }}
               />
             ))}
-
-            {/* Child components, such as markers, info windows, etc. */}
             <></>
           </GoogleMap>
         ) : (

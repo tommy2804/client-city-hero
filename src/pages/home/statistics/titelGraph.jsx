@@ -13,7 +13,7 @@ const TitelGraph = ({requests}) => {
 
   return (<div className='graph'>
 
-    <h3>Titel Graph</h3>
+    <h3>Title Graph</h3>
 
     <div className='graphANDlabels'>
       <div className='pai'>

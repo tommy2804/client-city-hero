@@ -23,7 +23,7 @@ const AddReq = () => {
     }
 
 
-  return (<>
+  return (<div style={{width:'60%', marginLeft:'15%'}}>
     <div class="form-floating mb-3">
         <input type="text" class="form-control" onChange={(ev)=>setdata({...data,reqStreet:ev.target.value})} id="floatingInput" placeholder="name@example.com"/>
         <label for="floatingInput">reqStreet</label>
@@ -53,7 +53,7 @@ const AddReq = () => {
         <input type="file" class="form-control" id="inputGroupFile01" onChange={(e) => setImgUrl(e)}/>
     </div>
     <button className='btn btn-dark' onClick={()=>addReq()}>send</button>
-  </>);
+  </div>);
 };
 
 export default AddReq;

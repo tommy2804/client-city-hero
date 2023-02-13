@@ -51,10 +51,10 @@ const startPhoneNumber = [
 
 export default function AddInspectorForm({setShowAlrt}) {
   const [formData, setFormData] = useState(initialData);
-  // const {addInspector}= useContext(MyContext)
-  async function addInspector(formData) {
+  const {addInspector}= useContext(MyContext)
+  async function addInspectorAndMore() {
     try{
-      await axios.post('http://localhost:4001/auth/register',{...formData,role:'inspector'});
+      await addInspector(formData)
       document.getElementById('sendInspectorBTN').innerHTML='&#10004'
       document.getElementById('sendInspectorBTN').style.color='green'
       setShowAlrt(true);
@@ -150,7 +150,7 @@ export default function AddInspectorForm({setShowAlrt}) {
           
 
           
-          <Button id='sendInspectorBTN' type="submit" fullWidth onClick={(e)=>{e.preventDefault();addInspector({...formData, phoneNumber:formData.startPhoneNumber+'-'+formData.endPhoneNumber})}} variant="contained" sx={{ mt: 3, mb: 2 }}>
+          <Button id='sendInspectorBTN' type="submit" fullWidth onClick={(e)=>{e.preventDefault();addInspectorAndMore({...formData, phoneNumber:formData.startPhoneNumber+'-'+formData.endPhoneNumber})}} variant="contained" sx={{ mt: 3, mb: 2 }}>
             send
           </Button>
           
