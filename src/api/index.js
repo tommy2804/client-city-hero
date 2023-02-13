@@ -1,18 +1,19 @@
-// import axios from 'axios';
-// import { async } from 'q';
+import axios from 'axios';
 
-// const API = axios.create({ baseURL: 'http://localhost:4001' });
+const API = axios.create({ baseURL: 'http://localhost:4001' });
 
-// API.interceptors.request.use((req) => {
-//   // before all the request so that we can send the token back to middlware so he can check the specific token
-//   if (localStorage.getItem('User')) {
-//     req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('User')).token}`;
-//   }
-//   return req;
-// });
+API.interceptors.request.use((req) => {
+  // before all the request so that we can send the token back to middlware so he can check the specific token
+  if (localStorage.getItem('User')) {
+    req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('User')).token}`;
+  }
+  return req;
+});
 
-// export const register = async (formData) => await axios.post('http://localhost:4001/auth/register', formData);
-// export const login = async (formData) => await axios.post('http://localhost:4001/auth/login', formData);
+export const register = async (formData) =>
+  await axios.post('http://localhost:4001/auth/register', formData);
+export const login = async (formData) =>
+  await axios.post('http://localhost:4001/auth/login', formData);
 
 // export const getRequests = async () => await API.get(`/request/getMunicipalityRequests`);
 
