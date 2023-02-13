@@ -56,18 +56,10 @@ export default function Form() {
       });
 
       if (res.status === 201) {
-        localStorage.setItem(
-          'User',
-          JSON.stringify({
-            id: res.data.id,
-            token: res.data.token,
-            email: res.data.email,
-            fullName: res.data.fullName,
-          })
-        );
-        console.log(res.data);
+        localStorage.setItem('User',res.data);
+        // console.log(res.data);
         dispatch(setUser(res.data));
-        navigate('/HomePage');
+        navigate('/Main');
       } else {
         alert(res.data);
       }
@@ -78,17 +70,9 @@ export default function Form() {
       });
 
       if (res.status === 201) {
-        localStorage.setItem(
-          'User',
-          JSON.stringify({
-            id: res.data.id,
-            token: res.data.token,
-            email: res.data.email,
-            fullName: res.data.fullName,
-          })
-        );
+        localStorage.setItem('User',res.data);
         dispatch(setUser(res.data));
-        navigate('/HomePage');
+        navigate('/Main');
       } else {
         alert(res.data);
       }

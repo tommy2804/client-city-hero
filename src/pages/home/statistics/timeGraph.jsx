@@ -3,8 +3,8 @@ import { PieChart } from 'react-minimal-pie-chart';
 import './statistics.css'
 
 const TimelGraph = ({requests}) => {
+  // console.log(requests[16]?.createdAt)
   const date = new Date();
-  console.log(requests[0])
   const data=
   [{name:'today' ,color:'#277da1'},
    {name:'this week' ,color:'#43aa8b'},

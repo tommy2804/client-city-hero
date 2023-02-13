@@ -15,7 +15,7 @@ export default function Inspector({inspector}) {
     useEffect(() => {getInspectorRequests()}, []);
 
     async function getInspectorRequests() {
-        const { data } = await axios.get(`http://localhost:4001/request/getInspectorRequests/${inspector._id}`);
+        const { data } = await axios.get(`https://server-cityhero.onrender.com/request/getInspectorRequests/${inspector._id}`);
         setMyRequests(data)
     }
 

@@ -29,8 +29,8 @@ export default function MapsWidget( {requests, center, inspectors}) {
     width: '100%',
     borderRadius: '10px',
     featureType: 'transit',
-    elementType: 'labels.icon',
-    stylers: [{ visibility: 'off' }],
+    elementType:'labels', stylers:[{ visibility: 'off' }],
+    
   };
 
   const { isLoaded } = useJsApiLoader({
@@ -52,14 +52,6 @@ export default function MapsWidget( {requests, center, inspectors}) {
     setMap(null);
   }, []);
 
-  // animate
-  function toggleBounce() {
-    if (markerRef.current.marker.getAnimation() !== null) {
-      markerRef.current.marker.setAnimation(null);
-    } else {
-      markerRef.current.marker.setAnimation(google.maps.Animation.BOUNCE);
-    }
-  }
 
   return (
     <Flex h='90%'  position="relative" flexDirection="column" alignItems="center" m='3%'>
@@ -102,8 +94,6 @@ export default function MapsWidget( {requests, center, inspectors}) {
                 }}
               />
             ))}
-
-            {/* Child components, such as markers, info windows, etc. */}
             <></>
           </GoogleMap>
         ) : (

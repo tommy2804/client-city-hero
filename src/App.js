@@ -15,10 +15,12 @@ import Main from './pages/main';
 import AddInspector from './pages/addInspector/AddInspector';
 import AllInspectors from './pages/allInspectors/AllInspectors';
 import Home from './pages/home/home';
+import Page404 from './pages/404/page404';
 
 
 const App = () => {
   const queryClient = new QueryClient();
+  const token=localStorage.getItem('User')
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
@@ -28,6 +30,7 @@ const App = () => {
               <div>
                 <Routes>
                   <Route path="/" element={<SignUp />} />
+                  {token &&(
                   <Route path="/Main" element={<Main />} >
                     <Route path="/Main" element={<Home/>} />
                     <Route path="/Main/ReportHandler" element={<ReportHandler/>} />
@@ -35,6 +38,8 @@ const App = () => {
                     <Route path="/Main/AddInspector" element={<AddInspector/>} />
                     <Route path="/Main/AllInspectors" element={<AllInspectors/>} />
                   </Route>
+                  )}
+                  <Route path="*" element={<Page404 />} />
                 </Routes>
               </div>
             </ContextProvider>

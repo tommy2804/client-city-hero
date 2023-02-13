@@ -12,11 +12,15 @@ import Sidebar from '../../components/sidebar/index';
 import { CustomSelect } from '../../components/custom/Select/dropdown';
 import { MyContext } from '../../context/context';
 import Filters from './Filters/Filters';
+import jwt_decode from "jwt-decode";
+
+
 
 const ReportHandler = () => {
   const isNonMobileScreens = useMediaQuery('(min-width:1000px)');
   const {getRequests, getInspectors, requests, center, inspectors} = useContext (MyContext);
-
+  const token=localStorage.getItem('User')
+  let decoded = jwt_decode(token);
   useEffect(() => {getRequests();getInspectors();}, []);
   
   return (
@@ -31,7 +35,7 @@ const ReportHandler = () => {
         >
 
         <Box display='flex' flexDirection='column' alignItems='center' justifyContent='center' flexBasis="35%" height="">
-          <h2 style={{fontFamily: 'Georgia, serif' ,fontWeight:'600', marginBottom:'4%'}}>Tel Aviv Reports</h2>
+          <h2 style={{fontFamily: 'Georgia, serif' ,fontWeight:'600', marginBottom:'4%'}}>{decoded.city} Reports</h2>
           <ReportsWidget />
         </Box>
 

@@ -21,6 +21,7 @@ import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import HomeIcon from '@mui/icons-material/Home';
 import LocalPoliceIcon from '@mui/icons-material/LocalPolice';
 import { useNavigate } from 'react-router-dom'
+import jwt_decode from "jwt-decode";
 
 
 
@@ -83,6 +84,9 @@ export default function MiniDrawer() {
     {name:'Inspectors handler' ,icon:<LocalPoliceIcon/> , path:'/Main/AllInspectors'},
   ]
   const navigate=useNavigate();
+
+  const token=localStorage.getItem('User')
+  let decoded = jwt_decode(token);
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -103,15 +107,19 @@ export default function MiniDrawer() {
                     cursor: 'pointer',
                   },
                 }}>
-                TEL AVIV
-              </Typography>
+                  {decoded.city}  
+            </Typography>
             </>
           )}
         </DrawerHeader>
 
         <Divider />
         
-        <DrawerHeader>{open && <img src='./assets/Tel_Aviv_Logo.png'></img>}</DrawerHeader>
+        {decoded.city=="Tel Aviv"?
+          <DrawerHeader>{open && <img src='./assets/Tel_Aviv_Logo.png'></img>}</DrawerHeader>
+          :
+          <DrawerHeader>{open && <img style={{height:'150px'}} src='./assets/RishonLezion.png'></img>}</DrawerHeader>
+        }  
 
         <List>
           {links.map((link) => (

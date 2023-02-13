@@ -1,20 +1,20 @@
-// import axios from 'axios';
+import axios from 'axios';
 // import { async } from 'q';
 
-// const API = axios.create({ baseURL: 'http://localhost:4001' });
+const API = axios.create({ baseURL: 'https://server-cityhero.onrender.com' });
 
-// API.interceptors.request.use((req) => {
-//   // before all the request so that we can send the token back to middlware so he can check the specific token
-//   if (localStorage.getItem('User')) {
-//     req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('User')).token}`;
-//   }
-//   return req;
-// });
+API.interceptors.request.use((req) => {
+  // before all the request so that we can send the token back to middlware so he can check the specific token
+  if (localStorage.getItem('User')) {
+    req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('User')).token}`;
+  }
+  return req;
+});
 
-// export const register = async (formData) => await axios.post('http://localhost:4001/auth/register', formData);
-// export const login = async (formData) => await axios.post('http://localhost:4001/auth/login', formData);
+export const register = async (formData) => await axios.post('https://server-cityhero.onrender.com/auth/register', formData);
+export const login = async (formData) => await axios.post('https://server-cityhero.onrender.com/auth/login', formData);
 
-// export const getRequests = async () => await API.get(`/request/getMunicipalityRequests`);
+export const getRequests = async () => await API.get(`/request/getMunicipalityRequests`);
 
 // export const sendToInspector = async (reqId, data) => await API.put(`/request/municipalityUpdate/${reqId}`, data);
 
