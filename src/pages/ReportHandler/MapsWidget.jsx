@@ -8,7 +8,7 @@ import { MyContext } from '../../context/context';
 export default function MapsWidget({ requests, center, inspectors }) {
   const markerRef = useRef(null);
   const { setShowRequestInspector, setShowRequest, setOpen } = useContext(MyContext);
-
+  console.log(inspectors);
   const containerStyle = {
     position: 'absolute',
     left: 0,
@@ -47,7 +47,7 @@ export default function MapsWidget({ requests, center, inspectors }) {
           <GoogleMap
             mapContainerStyle={containerStyle}
             center={center}
-            zoom={11}
+            zoom={18}
             onLoad={onLoad}
             onUnmount={onUnmount}>
             {inspectors.map((inspector) => (
